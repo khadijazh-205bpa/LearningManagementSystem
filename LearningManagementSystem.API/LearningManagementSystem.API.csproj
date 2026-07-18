@@ -21,11 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
     <Folder Include="Configurations\" />
+    <Folder Include="DTOs\Course\" />
+    <Folder Include="DTOs\Lesson\" />
+    <Folder Include="DTOs\Enrollment\" />
+    <Folder Include="DTOs\Auth\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>

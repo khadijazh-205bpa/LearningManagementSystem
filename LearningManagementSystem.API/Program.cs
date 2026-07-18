@@ -1,5 +1,9 @@
 using LearningManagementSystem.API.Data;
 using LearningManagementSystem.API.Models;
+using LearningManagementSystem.API.Repositories.Implementations;
+using LearningManagementSystem.API.Repositories.Interfaces;
+using LearningManagementSystem.API.Services.Implementations;
+using LearningManagementSystem.API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +21,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
