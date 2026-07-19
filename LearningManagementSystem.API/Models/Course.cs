@@ -18,7 +18,7 @@ namespace LearningManagementSystem.API.Models
 
         public Category Category { get; set; } = null!;
 
-        public int InstructorId { get; set; }
+        public string InstructorId { get; set; }
 
         public AppUser Instructor { get; set; } = null!;
 

@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Configurations\" />
-    <Folder Include="DTOs\Course\" />
     <Folder Include="DTOs\Lesson\" />
     <Folder Include="DTOs\Enrollment\" />
     <Folder Include="DTOs\Auth\" />
