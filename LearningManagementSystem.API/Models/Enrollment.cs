@@ -4,7 +4,7 @@ namespace LearningManagementSystem.API.Models
 {
     public class Enrollment : BaseEntity
     {
-        public int StudentId { get; set; }
+        public string StudentId { get; set; } = null!;
 
         public AppUser Student { get; set; } = null!;
 
