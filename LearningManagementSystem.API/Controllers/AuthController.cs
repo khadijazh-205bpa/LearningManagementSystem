@@ -25,8 +25,9 @@ namespace LearningManagementSystem.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
-            await _authService.LoginAsync(dto);
-            return Ok();
+            string token = await _authService.LoginAsync(dto);
+
+            return Ok(token);
         }
     }
 }

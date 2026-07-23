@@ -5,7 +5,7 @@ namespace LearningManagementSystem.API.Services.Interfaces
     public interface IAuthService
     {
         Task RegisterAsync(RegisterDto dto);
-        Task LoginAsync(LoginDto dto);
+        Task<string> LoginAsync(LoginDto dto);
     }
 }
   

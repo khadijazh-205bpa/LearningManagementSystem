@@ -24,5 +24,6 @@ namespace LearningManagementSystem.API.DTOs.Auth
         [Required(ErrorMessage = "Please confirm your password.")]
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; } = null!;
+       
     }
 }

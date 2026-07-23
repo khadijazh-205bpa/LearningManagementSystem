@@ -9,13 +9,17 @@ namespace LearningManagementSystem.API.Services.Implementations
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly ITokenService _tokenService;
+
 
         public AuthService(
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager)
+            SignInManager<AppUser> signInManager, 
+            ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
         public async Task RegisterAsync(RegisterDto dto)
         {
@@ -36,7 +40,7 @@ namespace LearningManagementSystem.API.Services.Implementations
             }
         }
 
-        public async Task LoginAsync(LoginDto dto)
+        public async Task<string> LoginAsync(LoginDto dto)
         {
             AppUser? user = await _userManager.FindByEmailAsync(dto.Email);
 
@@ -56,6 +60,11 @@ namespace LearningManagementSystem.API.Services.Implementations
             {
                 throw new Exception("Email or password is incorrect.");
             }
+            string token = _tokenService.GenerateToken(user);
+
+            return token;
         }
+
+        
     }
 }
