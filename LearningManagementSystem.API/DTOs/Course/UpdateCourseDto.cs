@@ -28,7 +28,7 @@ namespace LearningManagementSystem.API.DTOs.Course
         [Range(1, int.MaxValue, ErrorMessage = "Please select a valid category.")]
         public int CategoryId { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Please select a valid instructor.")]
+        [Required(ErrorMessage = "Instructor is required.")]
         public string InstructorId { get; set; }
     }
 }

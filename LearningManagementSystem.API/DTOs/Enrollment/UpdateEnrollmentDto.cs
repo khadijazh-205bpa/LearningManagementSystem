@@ -9,6 +9,7 @@ namespace LearningManagementSystem.API.DTOs.Enrollment
         [Range(1, int.MaxValue, ErrorMessage = "Invalid enrollment id.")]
         public int Id { get; set; }
 
+
         [Required(ErrorMessage = "Student is required.")]
         public string StudentId { get; set; } = null!;
 

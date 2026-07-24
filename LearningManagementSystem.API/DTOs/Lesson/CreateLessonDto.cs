@@ -11,7 +11,7 @@ namespace LearningManagementSystem.API.DTOs.Lesson
 
         [Required(ErrorMessage = "Content is required.")]
         [MinLength(10, ErrorMessage = "Content must be at least 10 characters.")]
-        [MaxLength(5000, ErrorMessage = "Content cannot exceed 5000 characters.")]
+        [MaxLength(1000, ErrorMessage = "Content cannot exceed 1000 characters.")]
         public string Content { get; set; }
 
         [Range(1, 1000, ErrorMessage = "Order must be between 1 and 1000.")]
