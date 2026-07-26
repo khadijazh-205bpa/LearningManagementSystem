@@ -10,16 +10,21 @@ namespace LearningManagementSystem.API.Services.Implementations
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
 
         public AuthService(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager, 
-            ITokenService tokenService)
+        ITokenService tokenService, RoleManager<IdentityRole> roleManager
+)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _roleManager = roleManager;
+
+
         }
         public async Task RegisterAsync(RegisterDto dto)
         {
@@ -27,7 +32,8 @@ namespace LearningManagementSystem.API.Services.Implementations
             {
                 FullName = dto.FullName,
                 UserName = dto.UserName,
-                Email = dto.Email
+                Email = dto.Email,
+                Role = "Student"
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, dto.Password);
@@ -38,6 +44,12 @@ namespace LearningManagementSystem.API.Services.Implementations
                     string.Join(", ", result.Errors.Select(e => e.Description))
                 );
             }
+            if (!await _roleManager.RoleExistsAsync("Student"))
+            {
+                await _roleManager.CreateAsync(new IdentityRole("Student"));
+            }
+
+            await _userManager.AddToRoleAsync(user, "Student");
         }
 
         public async Task<string> LoginAsync(LoginDto dto)

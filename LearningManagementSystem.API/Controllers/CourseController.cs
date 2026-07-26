@@ -2,6 +2,7 @@
 using LearningManagementSystem.API.DTOs.Course;
 using LearningManagementSystem.API.Services.Implementations;
 using LearningManagementSystem.API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearningManagementSystem.API.Controllers
@@ -36,21 +37,21 @@ namespace LearningManagementSystem.API.Controllers
             }
             return Ok(course);
         }
-        
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateCourseDto dto)
         {
             await _courseService.CreateAsync(dto);
             return Ok();
         }
-        
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update(UpdateCourseDto dto)
         {
             await _courseService.UpdateAsync(dto);
             return Ok();
         }
-     
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

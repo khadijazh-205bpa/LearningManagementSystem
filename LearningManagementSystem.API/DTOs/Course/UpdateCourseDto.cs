@@ -12,13 +12,13 @@ namespace LearningManagementSystem.API.DTOs.Course
         [Required(ErrorMessage = "Title is required.")]
         [MinLength(2, ErrorMessage = "Title must be at least 2 characters long.")]
         [MaxLength(100, ErrorMessage = "Title cannot exceed 100 characters.")]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
 
         [Required(ErrorMessage = "Description is required.")]
         [MinLength(10, ErrorMessage = "Description must be at least 10 characters long.")]
         [MaxLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
 
         [Required(ErrorMessage = "Course level is required.")]
@@ -29,6 +29,6 @@ namespace LearningManagementSystem.API.DTOs.Course
         public int CategoryId { get; set; }
 
         [Required(ErrorMessage = "Instructor is required.")]
-        public string InstructorId { get; set; }
+        public string InstructorId { get; set; } = string.Empty;
     }
 }

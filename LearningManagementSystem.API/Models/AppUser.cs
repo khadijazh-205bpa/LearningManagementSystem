@@ -6,7 +6,7 @@ namespace LearningManagementSystem.API.Models
     
     public class AppUser : IdentityUser
     {
-        public string FullName { get; set; } = null!;
+        public string FullName { get; set; } = string.Empty;
  
         public string Role { get; set; } = "Student";
 

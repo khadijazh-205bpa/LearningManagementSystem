@@ -1,5 +1,6 @@
 ﻿using LearningManagementSystem.API.DTOs.Lesson;
 using LearningManagementSystem.API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearningManagementSystem.API.Controllers
@@ -30,18 +31,21 @@ namespace LearningManagementSystem.API.Controllers
             }
             return Ok(lesson);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateLessonDto dto)
         {
             await _lessonService.CreateAsync(dto);
             return Ok();
         }
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update(UpdateLessonDto dto)
         {
             await _lessonService.UpdateAsync(dto);
             return Ok();
         }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
