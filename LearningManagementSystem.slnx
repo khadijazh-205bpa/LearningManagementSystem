@@ -1,3 +1,15 @@
 <Solution>
+  <Folder Name="/Frontend/">
+    <File Path="LearningManagementSystem.Frontend/.gitignore" />
+    <File Path="LearningManagementSystem.Frontend/eslint.config.js" />
+    <File Path="LearningManagementSystem.Frontend/index.html" />
+    <File Path="LearningManagementSystem.Frontend/package-lock.json" />
+    <File Path="LearningManagementSystem.Frontend/package.json" />
+    <File Path="LearningManagementSystem.Frontend/README.md" />
+    <File Path="LearningManagementSystem.Frontend/tsconfig.app.json" />
+    <File Path="LearningManagementSystem.Frontend/tsconfig.json" />
+    <File Path="LearningManagementSystem.Frontend/tsconfig.node.json" />
+    <File Path="LearningManagementSystem.Frontend/vite.config.ts" />
+  </Folder>
   <Project Path="LearningManagementSystem.API/LearningManagementSystem.API.csproj" />
 </Solution>
