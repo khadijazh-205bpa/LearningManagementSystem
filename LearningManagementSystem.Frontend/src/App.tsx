@@ -1,130 +1,115 @@
-import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { useState } from 'react'
 import './App.css'
 
+const API_URL = 'https://localhost:7023/api/Auth'
+
 function App() {
-  const [count, setCount] = useState(0)
-    const [apiMessage, setApiMessage] = useState('Yoxlanılır...')
+    const [mode, setMode] = useState<'login' | 'register'>('login')
+    const [message, setMessage] = useState('')
+    const [token, setToken] = useState('')
 
-    useEffect(() => {
-        fetch('https://localhost:7023/api/category') // öz endpoint adını yaz, aşağıda izah var
-            .then((res) => res.text())
-            .then((data) => setApiMessage('Backend cavab verdi: ' + data))
-            .catch((err) => setApiMessage('Xəta: ' + err.message))
-    }, [])
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-                  <h1>Get started</h1>
-                  <p style={{ color: 'red', fontWeight: 'bold' }}>{apiMessage}</p>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    // Register sahələri
+    const [fullName, setFullName] = useState('')
+    const [userName, setUserName] = useState('')
+    const [registerEmail, setRegisterEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
 
-      <div className="ticks"></div>
+    // Login sahələri
+    const [loginEmail, setLoginEmail] = useState('')
+    const [loginPassword, setLoginPassword] = useState('')
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setMessage('Göndərilir...')
+        try {
+            const res = await fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    fullName,
+                    userName,
+                    email: registerEmail,
+                    password,
+                    confirmPassword,
+                }),
+            })
+            const data = await res.text()
+            if (res.ok) {
+                setMessage('Qeydiyyat uğurlu oldu! İndi giriş edə bilərsən.')
+                setMode('login')
+            } else {
+                setMessage('Xəta: ' + data)
+            }
+        } catch (err: unknown) {
+            const errorMessage = err instanceof Error ? err.message : String(err)
+            setMessage('Xəta: ' + errorMessage)
+        }
+    }
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setMessage('Giriş edilir...')
+        try {
+            const res = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: loginEmail,
+                    password: loginPassword,
+                }),
+            })
+            const data = await res.text()
+            if (res.ok) {
+                setToken(data)
+                setMessage('Giriş uğurlu oldu!')
+            } else {
+                setMessage('Xəta: ' + data)
+            }
+        } catch (err: unknown) {
+            const errorMessage = err instanceof Error ? err.message : String(err)
+            setMessage('Xəta: ' + errorMessage)
+        }
+    }
+
+    return (
+        <div style={{ maxWidth: 400, margin: '50px auto', fontFamily: 'sans-serif' }}>
+            <h1>{mode === 'login' ? 'Giriş' : 'Qeydiyyat'}</h1>
+
+            <div style={{ marginBottom: 20 }}>
+                <button onClick={() => setMode('login')} disabled={mode === 'login'}>
+                    Giriş
+                </button>
+                <button onClick={() => setMode('register')} disabled={mode === 'register'} style={{ marginLeft: 10 }}>
+                    Qeydiyyat
+                </button>
+            </div>
+
+            {mode === 'register' ? (
+                <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <input placeholder="Ad Soyad" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+                    <input placeholder="İstifadəçi adı" value={userName} onChange={(e) => setUserName(e.target.value)} required />
+                    <input placeholder="Email" type="email" value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} required />
+                    <input placeholder="Şifrə" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <input placeholder="Şifrəni təsdiqlə" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                    <button type="submit">Qeydiyyatdan keç</button>
+                </form>
+            ) : (
+                <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <input placeholder="Email" type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} required />
+                    <input placeholder="Şifrə" type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required />
+                    <button type="submit">Giriş et</button>
+                </form>
+            )}
+
+            {message && <p style={{ marginTop: 20, fontWeight: 'bold' }}>{message}</p>}
+            {token && (
+                <div style={{ marginTop: 20, wordBreak: 'break-all', fontSize: 12, background: '#eee', padding: 10 }}>
+                    <strong>Token:</strong> {token}
+                </div>
+            )}
+        </div>
+    )
 }
 
 export default App
