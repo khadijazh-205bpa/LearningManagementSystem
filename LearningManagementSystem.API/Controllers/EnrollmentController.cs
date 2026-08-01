@@ -33,10 +33,16 @@ namespace LearningManagementSystem.API.Controllers
             }
             return Ok(enrollment);
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateEnrollmentDto dto)
         {
+            var studentId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(studentId))
+            {
+                return Unauthorized();
+            }
+            dto.StudentId = studentId;
             await _enrollmentService.CreateAsync(dto);
             return Ok();
         }
