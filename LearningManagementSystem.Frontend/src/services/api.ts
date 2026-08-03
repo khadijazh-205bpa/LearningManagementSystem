@@ -41,7 +41,46 @@ export async function getCategories(token: string): Promise<Category[]> {
   if (!res.ok) throw new Error('Kateqoriyalar yüklənmədi')
   return res.json()
 }
+export async function createCategory(token: string, name: string) {
+    const res = await fetch(`${API_URL}/Category`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name }),
+    })
 
+    if (!res.ok) throw new Error(await res.text())
+}
+
+export async function updateCategory(
+    token: string,
+    id: number,
+    name: string
+) {
+    const res = await fetch(`${API_URL}/Category`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id, name }),
+    })
+
+    if (!res.ok) throw new Error(await res.text())
+}
+
+export async function deleteCategory(token: string, id: number) {
+    const res = await fetch(`${API_URL}/Category/${id}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+
+    if (!res.ok) throw new Error(await res.text())
+}
 // ============ COURSE ============
 
 export async function getCourses(token: string): Promise<Course[]> {
