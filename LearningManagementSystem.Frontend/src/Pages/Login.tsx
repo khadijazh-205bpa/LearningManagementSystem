@@ -22,8 +22,7 @@ function Login({ onLoginSuccess, onSwitchToRegister }: LoginProps) {
             setMessage('Xəta: ' + errorMessage)
         }
     }
-
-    return (
+        return (
         <div style={{ maxWidth: 400, margin: '50px auto', fontFamily: 'sans-serif' }}>
             <h1>Giriş</h1>
 
