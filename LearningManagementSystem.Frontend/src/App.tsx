@@ -5,15 +5,18 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Courses from './pages/Courses'
 import CourseDetails from './pages/CourseDetails'
+import AdminPanel from './pages/AdminPanel'
 
 function App() {
     const [token, setToken] = useState<string>('')
     const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
+    const [showAdmin, setShowAdmin] = useState(false)
 
     const handleLogout = () => {
         setToken('')
         setSelectedCourse(null)
+        setShowAdmin(false)
     }
 
     if (!token) {
@@ -33,6 +36,10 @@ function App() {
         )
     }
 
+    if (showAdmin) {
+        return <AdminPanel token={token} onBack={() => setShowAdmin(false)} />
+    }
+
     if (selectedCourse) {
         return (
             <CourseDetails
@@ -44,7 +51,12 @@ function App() {
     }
 
     return (
-        <Courses token={token} onLogout={handleLogout} onOpenCourse={setSelectedCourse} />
+        <Courses
+            token={token}
+            onLogout={handleLogout}
+            onOpenCourse={setSelectedCourse}
+            onOpenAdmin={() => setShowAdmin(true)}
+        />
     )
 }
 

@@ -41,6 +41,13 @@ namespace LearningManagementSystem.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateCourseDto dto)
         {
+            var instructorId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(instructorId))
+            {
+                return Unauthorized();
+            }
+            dto.InstructorId = instructorId;
+
             await _courseService.CreateAsync(dto);
             return Ok();
         }
