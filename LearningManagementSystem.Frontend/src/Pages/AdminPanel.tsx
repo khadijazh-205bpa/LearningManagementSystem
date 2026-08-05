@@ -167,23 +167,50 @@ function AdminPanel({ token, onBack }: AdminPanelProps) {
 
             {message && <div className="toast">{message}</div>}
 
-            <div style={{ marginBottom: 16, display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                <button onClick={() => setTab('category')} disabled={tab === 'category'}>Kateqoriyalar</button>
+            <div className="admin-tabs">
+                <button onClick={() => setTab('category')} disabled={tab === 'category'}>Kateqoriya</button>
                 <button onClick={() => setTab('course')} disabled={tab === 'course'}>Kurslar</button>
                 <button onClick={() => setTab('lesson')} disabled={tab === 'lesson'}>Dərslər</button>
                 <input
                     placeholder="🔍 Axtar..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    style={{ marginLeft:"auto", minWidth: 500, padding: '22px 24px', fontSize: 18 }}
+                    style={{
+                        marginLeft: "auto",
+                        width: 670,
+                        padding: "10px 12px",
+                        fontSize: 16
+                    }}
                 />
             </div>
            
             {tab === 'category' && (
                 <div>
-                    <form onSubmit={handleAddCategory} style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
-                        <input placeholder="Kateqoriya adı" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} required />
-                        <button type="submit" className="btn-add">Əlavə et</button>
+<form
+    onSubmit={handleAddCategory}
+    style={{
+        display: 'flex',
+        gap: 10,
+        marginBottom: 20,
+        alignItems: 'center'
+                        }}>                       <input
+                            placeholder="Kateqoriya adı"
+                            value={categoryName}
+                            onChange={(e) => setCategoryName(e.target.value)}
+                            required
+                            style={{
+                                flex: 1,
+                                minWidth: 500,
+                                padding: '22px 24px',
+                                fontSize: 18 }}
+                        />
+                        <button  type="submit"
+    className="btn-add"
+                            style={{
+                                width: 170,
+                                height: 68
+                            }}>Əlavə et</button>
+
                     </form>
                     <div className="item-grid">
                         {filteredCategories.map((cat) => (
@@ -270,4 +297,4 @@ function AdminPanel({ token, onBack }: AdminPanelProps) {
     )
 }
 
-export default AdminPanel
+export default AdminPanel;

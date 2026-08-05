@@ -6,6 +6,7 @@ import Register from './pages/Register'
 import Courses from './pages/Courses'
 import CourseDetails from './pages/CourseDetails'
 import AdminPanel from './pages/AdminPanel'
+import MatrixBackground from './components/MatrixBackground'
 
 function App() {
     const [token, setToken] = useState<string>('')

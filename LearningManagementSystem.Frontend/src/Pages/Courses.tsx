@@ -5,7 +5,7 @@ import { getCategories, getCourses, enrollInCourse } from '../services/api'
 import Navbar from '../components/Navbar'
 import CategoryFilter from '../components/CategoryFilter'
 import CourseCard from '../components/CourseCard'
-
+import MatrixBackground from '../components/MatrixBackground'
 interface CoursesProps {
     token: string
     onLogout: () => void
@@ -42,7 +42,9 @@ function Courses({ token, onLogout, onOpenCourse, onOpenAdmin }: CoursesProps) {
         : courses
 
     return (
+
         <div style={{ maxWidth: 900, margin: '0 auto', fontFamily: 'sans-serif', padding: 20 }}>
+            <MatrixBackground />
             <Navbar onLogout={onLogout} />
 
             {isAdmin && (
