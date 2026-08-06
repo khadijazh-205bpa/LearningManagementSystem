@@ -1,6 +1,7 @@
 ﻿using LearningManagementSystem.API.DTOs.Auth;
 using LearningManagementSystem.API.Models;
 using LearningManagementSystem.API.Services.Interfaces;
+using LearningManagementSystem.API.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
 namespace LearningManagementSystem.API.Services.Implementations
@@ -15,7 +16,7 @@ namespace LearningManagementSystem.API.Services.Implementations
 
         public AuthService(
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager, 
+            SignInManager<AppUser> signInManager,
         ITokenService tokenService, RoleManager<IdentityRole> roleManager
 )
         {
@@ -40,8 +41,8 @@ namespace LearningManagementSystem.API.Services.Implementations
 
             if (!result.Succeeded)
             {
-                throw new Exception(
-                    string.Join(", ", result.Errors.Select(e => e.Description))
+                throw new ApiException(
+                    string.Join(", ", result.Errors.Select(e => e.Description)), 400
                 );
             }
             if (!await _roleManager.RoleExistsAsync("Student"))
@@ -58,7 +59,7 @@ namespace LearningManagementSystem.API.Services.Implementations
 
             if (user == null)
             {
-                throw new Exception("Email or password is incorrect.");
+                throw new ApiException("Email or password is incorrect.", 401);
             }
 
             SignInResult result = await _signInManager.PasswordSignInAsync(
@@ -70,13 +71,13 @@ namespace LearningManagementSystem.API.Services.Implementations
 
             if (!result.Succeeded)
             {
-                throw new Exception("Email or password is incorrect.");
+                throw new ApiException("Email or password is incorrect.", 401);
             }
             string token = _tokenService.GenerateToken(user);
 
             return token;
         }
 
-        
+
     }
 }

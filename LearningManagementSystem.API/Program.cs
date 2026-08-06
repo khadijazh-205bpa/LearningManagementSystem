@@ -110,6 +110,27 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var errorFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
+        var exception = errorFeature?.Error;
+
+        if (exception is LearningManagementSystem.API.Exceptions.ApiException apiEx)
+        {
+            context.Response.StatusCode = apiEx.StatusCode;
+            await context.Response.WriteAsJsonAsync(new { message = apiEx.Message });
+        }
+        else
+        {
+            context.Response.StatusCode = 500;
+            await context.Response.WriteAsJsonAsync(new { message = "Daxili server xətası baş verdi." });
+        }
+    });
+});
+
+
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
