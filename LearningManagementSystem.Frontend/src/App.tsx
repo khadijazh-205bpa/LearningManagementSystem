@@ -6,18 +6,20 @@ import Register from './pages/Register'
 import Courses from './pages/Courses'
 import CourseDetails from './pages/CourseDetails'
 import AdminPanel from './pages/AdminPanel'
-import MatrixBackground from './components/MatrixBackground'
+import MyCourses from './pages/MyCourses'
 
 function App() {
     const [token, setToken] = useState<string>('')
     const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
     const [showAdmin, setShowAdmin] = useState(false)
+    const [showMyCourses, setShowMyCourses] = useState(false)
 
     const handleLogout = () => {
         setToken('')
         setSelectedCourse(null)
         setShowAdmin(false)
+        setShowMyCourses(false)
     }
 
     if (!token) {
@@ -41,6 +43,19 @@ function App() {
         return <AdminPanel token={token} onBack={() => setShowAdmin(false)} />
     }
 
+    if (showMyCourses) {
+        return (
+            <MyCourses
+                token={token}
+                onBack={() => setShowMyCourses(false)}
+                onOpenCourse={(course) => {
+                    setShowMyCourses(false)
+                    setSelectedCourse(course)
+                }}
+            />
+        )
+    }
+
     if (selectedCourse) {
         return (
             <CourseDetails
@@ -57,6 +72,7 @@ function App() {
             onLogout={handleLogout}
             onOpenCourse={setSelectedCourse}
             onOpenAdmin={() => setShowAdmin(true)}
+            onOpenMyCourses={() => setShowMyCourses(true)}
         />
     )
 }

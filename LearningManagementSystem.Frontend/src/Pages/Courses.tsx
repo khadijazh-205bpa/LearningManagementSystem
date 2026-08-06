@@ -5,15 +5,16 @@ import { getCategories, getCourses, enrollInCourse } from '../services/api'
 import Navbar from '../components/Navbar'
 import CategoryFilter from '../components/CategoryFilter'
 import CourseCard from '../components/CourseCard'
-import MatrixBackground from '../components/MatrixBackground'
+import TechBackground from '../components/TechBackground'
 interface CoursesProps {
     token: string
     onLogout: () => void
     onOpenCourse: (course: Course) => void
     onOpenAdmin: () => void
+    onOpenMyCourses: () => void
 }
 
-function Courses({ token, onLogout, onOpenCourse, onOpenAdmin }: CoursesProps) {
+function Courses({ token, onLogout, onOpenCourse, onOpenAdmin, onOpenMyCourses }: CoursesProps) {
     const [categories, setCategories] = useState<Category[]>([])
     const [courses, setCourses] = useState<Course[]>([])
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
@@ -21,7 +22,7 @@ function Courses({ token, onLogout, onOpenCourse, onOpenAdmin }: CoursesProps) {
 
     const decoded = decodeToken(token)
     const isAdmin = decoded?.role === 'Admin'
-    console.log('Decoded token:', decoded)
+
     useEffect(() => {
         getCategories(token).then(setCategories).catch((err) => console.error(err))
         getCourses(token).then(setCourses).catch((err) => console.error(err))
@@ -42,18 +43,20 @@ function Courses({ token, onLogout, onOpenCourse, onOpenAdmin }: CoursesProps) {
         : courses
 
     return (
-
         <div style={{ maxWidth: 900, margin: '0 auto', fontFamily: 'sans-serif', padding: 20 }}>
-            <MatrixBackground />
+            <TechBackground />
             <Navbar onLogout={onLogout} />
 
-            {isAdmin && (
-                <div style={{ marginBottom: 20 }}>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
+                <button onClick={onOpenMyCourses} style={{ background: '#333', color: 'white', padding: '8px 16px' }}>
+                    📚 Mənim kurslarım
+                </button>
+                {isAdmin && (
                     <button onClick={onOpenAdmin} style={{ background: '#333', color: 'white', padding: '8px 16px' }}>
                         🛠️ Admin Panel
                     </button>
-                </div>
-            )}
+                )}
+            </div>
 
             {message && <p style={{ fontWeight: 'bold', color: 'green' }}>{message}</p>}
 

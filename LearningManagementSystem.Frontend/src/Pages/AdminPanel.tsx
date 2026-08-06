@@ -18,8 +18,10 @@ interface AdminPanelProps {
 function AdminPanel({ token, onBack }: AdminPanelProps) {
     const decoded = decodeToken(token)
     const instructorId = decoded?.userId || ''
-
+   
     const [tab, setTab] = useState<'category' | 'course' | 'lesson'>('category')
+    const [showCourseForm, setShowCourseForm] = useState(false)
+    const [showLessonForm, setShowLessonForm] = useState(false)
     const [categories, setCategories] = useState<Category[]>([])
     const [courses, setCourses] = useState<Course[]>([])
     const [lessons, setLessons] = useState<Lesson[]>([])
@@ -145,7 +147,8 @@ function AdminPanel({ token, onBack }: AdminPanelProps) {
     const filteredLessons = lessons.filter((l) => l.title.toLowerCase().includes(search.toLowerCase()))
 
     return (
-        <div style={{ maxWidth: 700, margin: '0 auto', fontFamily: 'sans-serif', padding: 16 }}>
+        <div
+            style={{ maxWidth: 700, margin: '0 auto', fontFamily: 'sans-serif', padding: 16 }}>
             <button onClick={onBack} style={{ marginBottom: 20 }}>← Geri</button>
             <h1 className="admin-title">Admin Panel</h1>
 
@@ -226,21 +229,69 @@ function AdminPanel({ token, onBack }: AdminPanelProps) {
 
             {tab === 'course' && (
                 <div>
-                    <form onSubmit={handleAddCourse} style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20, maxWidth: 400 }}>
-                        <input placeholder="Kurs adı" value={courseTitle} onChange={(e) => setCourseTitle(e.target.value)} required />
-                        <textarea placeholder="Təsvir" value={courseDescription} onChange={(e) => setCourseDescription(e.target.value)} required />
-                        <select value={courseLevel} onChange={(e) => setCourseLevel(Number(e.target.value))}>
-                            <option value={0}>Başlanğıc</option>
-                            <option value={1}>Orta</option>
-                            <option value={2}>İrəli</option>
-                        </select>
-                        <select value={courseCategoryId} onChange={(e) => setCourseCategoryId(Number(e.target.value))} required>
-                            <option value={0}>Kateqoriya seç</option>
-                            {categories.map((cat) => (
-                                <option key={cat.id} value={cat.id}>{cat.name}</option>
-                            ))}
-                        </select>
-                        <button type="submit" className="btn-add">Əlavə et</button>
+
+                    <form
+                        onSubmit={handleAddCourse}
+                        style={{ maxWidth: 400, marginBottom: 20 }}
+                    >
+                        <button
+                            type="button"
+                            onClick={() => setShowCourseForm(!showCourseForm)}
+                            style={{ marginBottom: 12 }}
+                        >
+                            {showCourseForm ? "▲" : "▼ Yeni kurs əlavə et"}
+                        </button>
+
+                        {showCourseForm && (
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 8,
+                                }}
+                            >
+                                <input
+                                    placeholder="Kurs adı"
+                                    value={courseTitle}
+                                    onChange={(e) => setCourseTitle(e.target.value)}
+                                    required
+                                />
+
+                                <textarea
+                                    placeholder="Təsvir"
+                                    value={courseDescription}
+                                    onChange={(e) => setCourseDescription(e.target.value)}
+                                    required
+                                />
+
+                                <select
+                                    value={courseLevel}
+                                    onChange={(e) => setCourseLevel(Number(e.target.value))}
+                                >
+                                    <option value={0}>Başlanğıc</option>
+                                    <option value={1}>Orta</option>
+                                    <option value={2}>İrəli</option>
+                                </select>
+
+                                <select
+                                    value={courseCategoryId}
+                                    onChange={(e) => setCourseCategoryId(Number(e.target.value))}
+                                    required
+                                >
+                                    <option value={0}>Kateqoriya seç</option>
+
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>
+                                            {cat.name}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                <button type="submit" className="btn-add">
+                                    Əlavə et
+                                </button>
+                            </div>
+                        )}
                     </form>
                     <div className="item-grid">
                         {filteredCourses.map((course) => (
@@ -256,18 +307,67 @@ function AdminPanel({ token, onBack }: AdminPanelProps) {
 
             {tab === 'lesson' && (
                 <div>
-                    <form onSubmit={handleAddLesson} style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20, maxWidth: 400 }}>
-                        <select value={lessonCourseId} onChange={(e) => setLessonCourseId(Number(e.target.value))} required>
-                            <option value={0}>Kurs seç</option>
-                            {courses.map((course) => (
-                                <option key={course.id} value={course.id}>{course.title}</option>
-                            ))}
-                        </select>
-                        <input placeholder="Dərs adı" value={lessonTitle} onChange={(e) => setLessonTitle(e.target.value)} required />
-                        <textarea placeholder="Məzmun" value={lessonContent} onChange={(e) => setLessonContent(e.target.value)} required />
-                        <input type="number" placeholder="Sıra" value={lessonOrder} onChange={(e) => setLessonOrder(Number(e.target.value))} required />
-                        <button type="submit" className="btn-add">Əlavə et</button>
-                    </form>
+
+                    <button
+                        type="button"
+                        onClick={() => setShowLessonForm(!showLessonForm)}
+                        style={{ marginBottom: 12 }}
+                    >
+                        {showLessonForm ? "▲" : "▼ Yeni dərs əlavə et"}
+                    </button>
+
+                    {showLessonForm && (
+                        <form
+                            onSubmit={handleAddLesson}
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 8,
+                                marginBottom: 20,
+                                maxWidth: 400,
+                            }}
+                        >
+                            <select
+                                value={lessonCourseId}
+                                onChange={(e) => setLessonCourseId(Number(e.target.value))}
+                                required
+                            >
+                                <option value={0}>Kurs seç</option>
+
+                                {courses.map((course) => (
+                                    <option key={course.id} value={course.id}>
+                                        {course.title}
+                                    </option>
+                                ))}
+                            </select>
+
+                            <input
+                                placeholder="Dərs adı"
+                                value={lessonTitle}
+                                onChange={(e) => setLessonTitle(e.target.value)}
+                                required
+                            />
+
+                            <textarea
+                                placeholder="Məzmun"
+                                value={lessonContent}
+                                onChange={(e) => setLessonContent(e.target.value)}
+                                required
+                            />
+
+                            <input
+                                type="number"
+                                placeholder="Sıra"
+                                value={lessonOrder}
+                                onChange={(e) => setLessonOrder(Number(e.target.value))}
+                                required
+                            />
+
+                            <button type="submit" className="btn-add">
+                                Əlavə et
+                            </button>
+                        </form>
+                    )}
                     <div className="item-grid">
                         {filteredLessons.map((lesson) => (
                             <div key={lesson.id} className="item-card">
@@ -295,6 +395,9 @@ function AdminPanel({ token, onBack }: AdminPanelProps) {
             )}
         </div>
     )
+
 }
+
+
 
 export default AdminPanel;

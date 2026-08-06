@@ -479,3 +479,55 @@ body {
                     background: linear-gradient(135deg, #ff5757, #d63447);
                     opacity: 1;
                 }
+
+
+.tech-background {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.tech-item {
+    position: absolute;
+    font-size: 22px;
+    font-weight: 600;
+    color: rgba(56, 189, 248, 0.15);
+    white-space: nowrap;
+}
+
+    .tech-item.move-up {
+        animation-name: floatUp;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        bottom: -30px;
+    }
+
+    .tech-item.move-down {
+        animation-name: floatDown;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        top: -30px;
+        color: rgba(255, 87, 87, 0.15);
+    }
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-110vh);
+    }
+}
+
+@keyframes floatDown {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(110vh);
+    }
+}

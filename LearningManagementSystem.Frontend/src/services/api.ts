@@ -118,3 +118,18 @@ export async function enrollInCourse(token: string, courseId: number): Promise<v
     throw new Error(text)
   }
 }
+export interface Enrollment {
+    id: number
+    studentId: string
+    courseId: number
+    enrolledAt: string
+    isCompleted: boolean
+}
+
+export async function getMyEnrollments(token: string): Promise<Enrollment[]> {
+    const res = await fetch(`${API_URL}/Enrollment`, {
+        headers: { Authorization: `Bearer ${token}` },
+    })
+    if (!res.ok) throw new Error('Yazılmalar yüklənmədi')
+    return res.json()
+}
