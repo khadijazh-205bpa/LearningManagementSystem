@@ -5,34 +5,45 @@ const API_URL = 'https://localhost:7023/api'
 // ============ AUTH ============
 
 export async function registerUser(data: {
-  fullName: string
-  userName: string
-  email: string
-  password: string
-  confirmPassword: string
+    fullName: string
+    userName: string
+    email: string
+    password: string
+    confirmPassword: string
 }): Promise<string> {
-  const res = await fetch(`${API_URL}/Auth/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  })
-  const text = await res.text()
-  if (!res.ok) throw new Error(text)
-  return text
+    const res = await fetch(`${API_URL}/Auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+    })
+    const text = await res.text()
+    if (!res.ok) {
+        try {
+            const parsed = JSON.parse(text)
+            throw new Error(parsed.message || text)
+        } catch {
+            throw new Error(text)
+        }
+    }
+    return text
 }
-
 export async function loginUser(data: { email: string; password: string }): Promise<string> {
-  const res = await fetch(`${API_URL}/Auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  })
-  const text = await res.text()
-  if (!res.ok) throw new Error(text)
-  return text
-}
-
-// ============ CATEGORY ============
+    const res = await fetch(`${API_URL}/Auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+    })
+    const text = await res.text()
+    if (!res.ok) {
+        try {
+            const parsed = JSON.parse(text)
+            throw new Error(parsed.message || text)
+        } catch {
+            throw new Error(text)
+        }
+    }
+    return text
+}// ============ CATEGORY ============
 
 export async function getCategories(token: string): Promise<Category[]> {
   const res = await fetch(`${API_URL}/Category`, {
